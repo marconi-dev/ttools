@@ -1,5 +1,15 @@
+import os
+
+
 class Component:
-    def __init__(self, name=""):
+    def __init__(
+        self, 
+        name="",
+        screen_height=os.get_terminal_size().lines,
+        screen_width=os.get_terminal_size().columns,
+    ):
+        self.screen_height = screen_height
+        self.screen_height = screen_height
         self.name = name
 
     @property
@@ -35,4 +45,3 @@ class Component:
             raise ValueError('Component.name must not be empty')
         
         self._name = name
-
