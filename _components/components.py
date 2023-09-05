@@ -8,7 +8,7 @@ class Component:
         screen_height=os.get_terminal_size().lines,
         screen_width=os.get_terminal_size().columns,
     ):
-        self.screen_height = screen_height
+        self.screen_width = screen_width
         self.screen_height = screen_height
         self.name = name
 
