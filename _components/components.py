@@ -1,15 +1,13 @@
-import os
+from _screen import screen
 
 
 class Component:
     def __init__(
         self, 
         name="",
-        screen_height=os.get_terminal_size().lines,
-        screen_width=os.get_terminal_size().columns,
+        screen=screen.Screen
     ):
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.screen = screen
         self.name = name
 
     @property
@@ -29,19 +27,5 @@ class Component:
 
         return largest_line_length
 
-    @property
-    def name(self) -> str:
-        return self._name
-    
     def __str__(self) -> str:
         raise NotImplementedError()
-
-    @name.setter
-    def name(self, name):
-        if name is None:
-            raise ValueError('Component.name must not be None')
-        
-        elif name == "":
-            raise ValueError('Component.name must not be empty')
-        
-        self._name = name

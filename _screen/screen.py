@@ -1,5 +1,4 @@
 import os
-from _components.components import Component
 
 
 class ComponentHandler:
@@ -13,21 +12,7 @@ class ComponentHandler:
             for component in self.components.values()
         ])
 
-    def component_is_valid(self, component) -> bool:
-        if not isinstance(component, Component):
-            raise ValueError(f"{component}")
-
-        comp_with_same_name = list(filter(
-            lambda comp: component.name in comp, self.components
-        ))
-
-        if len(comp_with_same_name) > 0:
-            raise ValueError(f"{component}")
-
-        return True
-
     def add_component(self, component):
-        self.component_is_valid(component)
         self.components[component.name] = component
         self.render()
     
@@ -64,14 +49,15 @@ class Screen(ComponentHandler):
         Left align the component string with the screen width.
         Once component and screen have the same width, center then.
         """
-        center_component = "".join([
-            line.ljust(self.style['width']) 
-            for line in str(component).splitlines()
-        ])
-        center_component = center_component.center(
-            os.get_terminal_size().columns
-        )
-        return center_component
+        centered_component = ""
+        t_width = os.get_terminal_size().columns
+
+        for line in str(component).splitlines():
+            padded_component = line.ljust(self.style['width'])
+            centered_component += padded_component.center(t_width)
+
+        return centered_component
+
     
     def horizontal_alignment(self):
         if self.style['center']:
@@ -79,7 +65,7 @@ class Screen(ComponentHandler):
                 self.get_centered_component(component) 
                 for component in self.components.values()
             ]
-        
+
         return [str(component) for component in self.components.values()]
 
     def vertical_alignment(self):
