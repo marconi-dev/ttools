@@ -71,7 +71,7 @@ class Screen(ComponentHandler):
     def vertical_alignment(self):
         if self.style['cover']:
             cover_height = (
-                os.get_terminal_size().lines -
+                self.style['height'] -
                 self.components_total_height -
                 2
             )
@@ -79,12 +79,9 @@ class Screen(ComponentHandler):
         return ""
 
     def render(self):
-        comp_str_list = self.horizontal_alignment()
-        vertical_alignment = self.vertical_alignment()
-
         os.system('clear')
 
-        for comp in comp_str_list:
+        for comp in self.horizontal_alignment():
             print(comp)
         
-        print(vertical_alignment)
+        print(self.vertical_alignment())
