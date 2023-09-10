@@ -34,6 +34,10 @@ class Screen(ComponentHandler):
     def __init__(self, style={}):
         super().__init__()
         self.style = self.get_style(style)
+        self.get_body()
+
+    def get_body(self):
+        raise NotImplementedError()
     
     def get_style(self, values: dict):
         return {

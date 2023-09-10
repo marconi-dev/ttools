@@ -10,15 +10,20 @@ from _components.components import Component
 class MyComponent(Component):
     """Multiline component"""
 
-    def __str__(self):
+    def get_body(self):
         return "||====||\n||    ||\n||====||"
 
 
 class MyComponent2(Component):
     """Single line component"""
 
-    def __str__(self): 
+    def get_body(self): 
         return '<Component/>'
+
+
+class MyScreen(Screen):
+    def get_body(self):
+        return 
 
 
 class TestScreen(TestCase):
@@ -28,7 +33,7 @@ class TestScreen(TestCase):
 
     def test_total_height(self):
         self.redirectIO()
-        screen: Screen = Screen()
+        screen: MyScreen = MyScreen()
         self.assertEqual(screen.components_total_height, 0)
 
         with patch('os.system', side_effect=lambda x: None):
@@ -38,7 +43,7 @@ class TestScreen(TestCase):
     def test_render(self):
         with patch('os.system', side_effect=lambda x: None):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-                Screen().add_component(MyComponent2(name='a'))
+                MyScreen().add_component(MyComponent2(name='a'))
                 self.assertEqual(
                     mock_stdout.getvalue(),
                     "<Component/>\n\n"
@@ -47,7 +52,7 @@ class TestScreen(TestCase):
     def test_render_with_multiple_lines_conponent(self):
         with patch('os.system', side_effect=lambda x: None):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-                Screen().add_component(MyComponent(name='a'))
+                MyScreen().add_component(MyComponent(name='a'))
                 self.assertEqual(
                     mock_stdout.getvalue(),
                     "||====||\n||    ||\n||====||\n\n"
@@ -59,7 +64,7 @@ class TestScreen(TestCase):
         center_str += "||    ||".ljust(width, " ")
         center_str += "||====||".ljust(width, " ") + "\n\n"
 
-        screen: Screen = Screen(style={'center': True})
+        screen: MyScreen = MyScreen(style={'center': True})
 
         with patch('os.system', side_effect=lambda x: None):
             with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
@@ -69,7 +74,7 @@ class TestScreen(TestCase):
     def test_cover(self):
         t_input_heigth = 2
         t_height = os.get_terminal_size().lines
-        screen: Screen = Screen(style={'cover': True})
+        screen: MyScreen = MyScreen(style={'cover': True})
 
         self.assertEqual(
             len(screen.vertical_alignment()),
@@ -79,7 +84,7 @@ class TestScreen(TestCase):
     def test_cover_with_components(self):
         t_input_heigth = 2
         t_height = os.get_terminal_size().lines
-        screen: Screen = Screen(style={'cover': True})
+        screen: MyScreen = MyScreen(style={'cover': True})
         component: MyComponent = MyComponent(name='a')
         screen.components['a'] = component
 
@@ -89,5 +94,5 @@ class TestScreen(TestCase):
         )
 
     def test_cover_with_height(self):
-        screen: Screen = Screen({'cover': True, 'height': 100})
+        screen: MyScreen = MyScreen({'cover': True, 'height': 100})
         self.assertEqual(len(screen.vertical_alignment()), 98)
