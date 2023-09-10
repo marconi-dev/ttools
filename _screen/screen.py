@@ -66,7 +66,7 @@ class Screen(ComponentHandler):
                 for component in self.components.values()
             ]
 
-        return [str(component) for component in self.components.values()]
+        return [component for component in self.components.values()]
 
     def vertical_alignment(self):
         if self.style['cover']:

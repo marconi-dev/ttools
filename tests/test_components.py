@@ -8,14 +8,9 @@ class TestComponent(TestCase):
         component: Component = Component(name=name)
         self.assertEqual(component.name, name)
 
-    def test_string_representation_not_implemented(self):
-        component: Component = Component(name='Component')
-        with self.assertRaises(NotImplementedError):
-            print(component)
-
     def test_component_height(self):
         class MyComponent(Component):
-            def __str__(self) -> str:
+            def get_body(self):
                 return 'Hello,\n World!'
 
         my_component: MyComponent = MyComponent(name='MyComponent')
@@ -23,7 +18,7 @@ class TestComponent(TestCase):
 
     def test_component_width(self):
         class MyComponent(Component):
-            def __str__(self) -> str:
+            def get_body(self) -> str:
                 return 'small Line\nLargest Line\n123\nloveU'
 
         largest_line_len = len('Largest Line')
